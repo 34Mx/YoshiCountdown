@@ -160,11 +160,6 @@
 			z-index: 1;
 		}
 
-		.target span {
-			color: var(--accent-3);
-			font-weight: 700;
-		}
-
 		.countdown {
 			display: grid;
 			grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -268,9 +263,6 @@
 			<p class="subtitle">
 				Und zwaaaar:
 			</p>
-			<div class="target">
-				Zielzeitpunkt: <span>25.07.2026 10:00:00</span>
-			</div>
 
 			<div class="countdown" aria-live="polite" aria-atomic="true">
 				<div class="unit"><span class="value" id="days">00</span><span class="label">Tage</span></div>
@@ -280,8 +272,6 @@
 			</div>
 
 			<div class="status">
-				<div><span class="pulse" aria-hidden="true"></span><strong id="state">Live</strong> - Aktualisierung jede Sekunde</div>
-				<div id="next-update">Nächste Aktualisierung in 1 s</div>
 			</div>
 		</section>
 	</main>
@@ -316,7 +306,6 @@
 				elements.minutes.textContent = "00";
 				elements.seconds.textContent = "00";
 				elements.state.textContent = "Erreicht";
-				elements.nextUpdate.textContent = "Zielzeitpunkt ist erreicht.";
 				document.title = "Countdown beendet";
 				return;
 			}
@@ -332,7 +321,6 @@
 			elements.minutes.textContent = pad(minutes);
 			elements.seconds.textContent = pad(seconds);
 			elements.state.textContent = "Live";
-			elements.nextUpdate.textContent = `Nächste Aktualisierung in ${seconds === 0 ? 1 : 1} s`;
 			document.title = `${pad(days)}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s - Countdown`;
 		}
 
