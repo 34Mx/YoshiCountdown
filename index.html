@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -47,8 +48,8 @@
 			pointer-events: none;
 			opacity: 0.06;
 			background-image:
-				linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px),
-				linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px);
+				linear-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+				linear-gradient(90deg, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
 			background-size: 34px 34px;
 			mask-image: radial-gradient(circle at center, black 35%, transparent 80%);
 		}
@@ -127,6 +128,16 @@
 			max-width: 10ch;
 			position: relative;
 			z-index: 1;
+		}
+
+		h2 {
+			margin: 10px 0 12px;
+			font-size: 2.2rem;
+			letter-spacing: -0.05em;
+			max-width: 10ch;
+			position: relative;
+			z-index: 1;
+			white-space: nowrap;
 		}
 
 		.subtitle {
@@ -234,8 +245,17 @@
 		}
 
 		@keyframes pulse {
-			0%, 100% { transform: scale(0.85); opacity: 0.7; }
-			50% { transform: scale(1.2); opacity: 1; }
+
+			0%,
+			100% {
+				transform: scale(0.85);
+				opacity: 0.7;
+			}
+
+			50% {
+				transform: scale(1.2);
+				opacity: 1;
+			}
 		}
 
 		@media (max-width: 760px) {
@@ -257,8 +277,21 @@
 				grid-template-columns: 1fr;
 			}
 		}
+
+		#wordscountdown {
+			font-weight: lighter;
+		}
+
+		#wordscountdown span {
+			font-weight: bolder;
+		}
+
+		.hidden {
+			display: none;
+		}
 	</style>
 </head>
+
 <body>
 	<div class="noise" aria-hidden="true"></div>
 	<main class="wrap">
@@ -275,6 +308,8 @@
 				<div class="unit"><span class="value" id="minutes">00</span><span class="label">Minuten</span></div>
 				<div class="unit"><span class="value" id="seconds">00</span><span class="label">Sekunden</span></div>
 			</div>
+			<h2 id="wordscountdown" class="wordscountdown hidden"><span id="days_word">00</span> Tadin, <span id="hours_word">00</span> Tunten, <span
+					id="minutes_word">00</span> Minutin und <span id="seconds_word">00</span> Ditundin!!!</h2>
 
 			<div class="status">
 			</div>
@@ -289,8 +324,11 @@
 			hours: document.getElementById("hours"),
 			minutes: document.getElementById("minutes"),
 			seconds: document.getElementById("seconds"),
-			state: document.getElementById("state"),
-			nextUpdate: document.getElementById("next-update"),
+			daysWord: document.getElementById("days_word"),
+			hoursWord: document.getElementById("hours_word"),
+			minutesWord: document.getElementById("minutes_word"),
+			secondsWord: document.getElementById("seconds_word"),
+			state: document.getElementById("state")
 		};
 
 		function pad(value) {
@@ -306,7 +344,13 @@
 				elements.hours.textContent = "00";
 				elements.minutes.textContent = "00";
 				elements.seconds.textContent = "00";
-				elements.state.textContent = "Erreicht";
+				elements.daysWord.textContent = convertToWord(0);
+				elements.hoursWord.textContent = convertToWord(0);
+				elements.minutesWord.textContent = convertToWord(0);
+				elements.secondsWord.textContent = convertToWord(0);
+				if (elements.state) {
+					elements.state.textContent = "Erreicht";
+				}
 				document.title = "Countdown beendet";
 				return;
 			}
@@ -321,11 +365,38 @@
 			elements.hours.textContent = pad(hours);
 			elements.minutes.textContent = pad(minutes);
 			elements.seconds.textContent = pad(seconds);
+			elements.daysWord.textContent = convertToWord(days);
+			elements.hoursWord.textContent = convertToWord(hours);
+			elements.minutesWord.textContent = convertToWord(minutes);
+			elements.secondsWord.textContent = convertToWord(seconds);
 			document.title = `${pad(days)}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s - Countdown`;
 		}
+
+		function convertToWord(number) {
+			const nums = [
+				"dull", "ein", "bei", "trai", "bir", "bümp", "detz", "dibin", "att", "doin",
+				"tin", "elpf", "bölpf", "beitin", "birtin", "bümpin", "detzin", "diptin", "attin", "dointin",
+				"bantit", "einbantit", "beibantit", "traibantit", "birbantit", "bümpbantit", "detzbantit", "dibinbantit", "attbantit", "doinbantit",
+				"traitit", "eintraitit", "beitraitit", "traitraitit", "birtraitit", "bümptraitit", "detztraitit", "dibintraitit", "atttraitit", "dointraitit",
+				"birtit", "einbirtit", "beibirtit", "traibirtit", "birbirtit", "bümpbirtit", "detzbirtit", "dibinbirtit", "attbirtit", "doinbirtit",
+				"bümpit", "einbümpit", "beibümpit", "traibümpit", "birbümpit", "bümpbümpit", "detzbümpit", "dibinbümpit", "attbümpit", "doinbümpit"
+			]
+			if (number >= 0 && number < nums.length) {
+				return nums[number];
+			}
+			else return "pupts"
+		}
+
+		const numCountdown = document.querySelector(".countdown");
+		const wordCountdown = document.querySelector(".wordscountdown");
+		document.addEventListener("click", () => {
+			numCountdown.classList.toggle("hidden")
+			wordCountdown.classList.toggle("hidden")
+		})
 
 		render();
 		setInterval(render, 1000);
 	</script>
 </body>
+
 </html>
