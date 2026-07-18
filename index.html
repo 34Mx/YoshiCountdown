@@ -119,12 +119,6 @@
 			color: var(--accent);
 		}
 
-		.timezone {
-			margin: 0;
-			color: var(--muted);
-			font-size: 0.95rem;
-		}
-
 		h1 {
 			margin: 10px 0 12px;
 			font-size: clamp(2.2rem, 7vw, 5.2rem);
@@ -254,10 +248,6 @@
 	<div class="noise" aria-hidden="true"></div>
 	<main class="wrap">
 		<section class="card" aria-labelledby="headline">
-			<div class="topline">
-				<p class="eyebrow">Countdown in deiner lokalen Zeitzone</p>
-				<p class="timezone" id="timezone">Zeitzone wird geladen...</p>
-			</div>
 
 			<h1 id="headline">Yoshii kommt bald!</h1>
 			<p class="subtitle">
@@ -278,7 +268,6 @@
 
 	<script>
 		const target = new Date(2026, 6, 25, 10, 0, 0, 0);
-		const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "deine Zeitzone";
 
 		const elements = {
 			days: document.getElementById("days"),
@@ -286,11 +275,8 @@
 			minutes: document.getElementById("minutes"),
 			seconds: document.getElementById("seconds"),
 			state: document.getElementById("state"),
-			timezone: document.getElementById("timezone"),
 			nextUpdate: document.getElementById("next-update"),
 		};
-
-		elements.timezone.textContent = `Zeitzone: ${timezone}`;
 
 		function pad(value) {
 			return String(value).padStart(2, "0");
